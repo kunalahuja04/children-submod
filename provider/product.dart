@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shopping/models/product.dart';
-import 'package:shopping/widgets/single_product_item.dart';
+import '../models/product.dart';
 
-class ProductOverview extends StatelessWidget {
-  final List<Product> loadedProducts = [
+class Products with ChangeNotifier {
+  List<Product> _items = [
     Product(
       id: 'p1',
       title: 'Red Shirt',
@@ -38,29 +37,16 @@ class ProductOverview extends StatelessWidget {
     ),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'All in One',
-        ),
-      ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(8.0),
-        itemCount: loadedProducts.length,
-        itemBuilder: (context, i) => ProductItem(
-          loadedProducts[i].title,
-          loadedProducts[i].title,
-          loadedProducts[i].imageUrl,
-        ),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-      ),
-    );
+  Product findById(String id) { 
+    return _items.firstWhere((prod) => prod.id == id, orElse:  null);
+  }
+
+  List<Product> get items {
+    return [..._items];
+
+    void addProducts() {
+      // _items.add(value);
+      notifyListeners();
+    }
   }
 }
